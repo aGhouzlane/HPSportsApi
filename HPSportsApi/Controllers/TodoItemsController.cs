@@ -44,6 +44,14 @@ namespace HPSportsApi.Controllers
               todoItems = todoItems.Where(item => item.Name.ToLower().Contains(queryParametters.Name.ToLower()));
             }
 
+            if(!string.IsNullOrEmpty(queryParametters.SortBy))
+            {
+                if(typeof(TodoItem).GetProperty(queryParametters.SortBy) != null)
+                {
+                    todoItems = todoItems.OrderByCustom(queryParametters.SortBy, queryParametters.SortOrder);
+                }
+            }
+
             todoItems = todoItems
                 .Skip(queryParametters.Size * (queryParametters.Page - 1))
                 .Take(queryParametters.Size);
